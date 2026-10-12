@@ -163,8 +163,8 @@
           <div class="stack">
             <input type="text" id="c-nick" placeholder="내 이름 (예: 아빠)" maxlength="12" />
             <input type="text" id="c-fam" placeholder="가족 이름 (예: 라진이네)" maxlength="20" />
-            <div class="inline"><input type="date" id="c-adopt" value="2026-10-11" /><input type="text" id="c-place" value="수원" placeholder="입양 장소" /></div>
-            <div class="inline"><input type="number" id="c-age" placeholder="나이(개월, 어림)" min="0" /><select id="c-feed"><option value="1">매일 밥</option><option value="2" selected>2일에 한 번</option><option value="3">3일에 한 번</option></select></div>
+            <div class="inline"><div class="half"><span class="mini">입양일</span><input type="date" id="c-adopt" value="2026-10-11" /></div><div class="half"><span class="mini">입양 장소</span><input type="text" id="c-place" value="수원" placeholder="입양 장소" /></div></div>
+            <div class="inline"><div class="half"><span class="mini">나이 (개월, 어림)</span><input type="number" id="c-age" placeholder="모르면 비움" min="0" inputmode="numeric" /></div><div class="half"><span class="mini">밥 주는 간격</span><select id="c-feed"><option value="1">매일</option><option value="2" selected>2일에 한 번</option><option value="3">3일에 한 번</option></select></div></div>
             <button class="btn block" id="c-create">가족 만들기 (관리자)</button>
           </div>
         </div>
