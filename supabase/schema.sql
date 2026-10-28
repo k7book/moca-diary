@@ -197,6 +197,7 @@ create or replace function create_family(
 ) returns jsonb
 language plpgsql security definer set search_path = public as $$
 declare
+  v_alpha text := 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
   v_code text;
   v_family uuid;
   v_member uuid;
@@ -208,7 +209,10 @@ begin
   end if;
   -- 6자리 코드, 헷갈리는 글자 제외
   loop
-    v_code := upper(substr(translate(encode(gen_random_bytes(6), 'base64'), '+/=0O1Il', 'ABCDEFGH'), 1, 6));
+    v_code := '';
+    for i in 1..6 loop
+      v_code := v_code || substr(v_alpha, 1 + floor(random() * length(v_alpha))::int, 1);
+    end loop;
     exit when not exists (select 1 from families where invite_code = v_code);
   end loop;
   insert into families(name, invite_code) values (p_family_name, v_code) returning id into v_family;

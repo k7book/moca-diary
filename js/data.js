@@ -169,10 +169,14 @@
       return data || [];
     },
     async upsertLog(date, fields) {
+      const ctx = await this.getContext();
       const existing = await this.getLog(date);
-      const row = { ...fields, pet_id: this.ctx.pet.id, log_date: date };
-      if (!existing) row.member_id = this.ctx.me.id;
-      const { data, error } = await this.client.from("daily_logs").upsert(row, { onConflict: "pet_id,log_date" }).select().single();
+      if (existing) { // 이미 있는 날: 작성자는 그대로 두고 내용만 고친다
+        const { data, error } = await this.client.from("daily_logs").update(fields).eq("id", existing.id).select().single();
+        if (error) throw error; return data;
+      }
+      const row = { ...fields, pet_id: ctx.pet.id, log_date: date, member_id: ctx.me.id };
+      const { data, error } = await this.client.from("daily_logs").insert(row).select().single();
       if (error) throw error; return data;
     },
     async deleteLog(date) {
